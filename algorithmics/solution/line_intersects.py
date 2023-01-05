@@ -1,8 +1,10 @@
 import math
 from typing import List
 
-import shapely
+import shapely.geometry
 
+from algorithmics.enemy.asteroids_zone import AsteroidsZone
+from algorithmics.enemy.black_hole import BlackHole
 from algorithmics.enemy.enemy import Enemy
 from algorithmics.utils import coordinate
 from algorithmics.enemy import asteroids_zone, black_hole
@@ -27,14 +29,16 @@ def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, en
     if length == 0:
         return False
     for enemy in enemies:
-        if type(enemy) == asteroids_zone and not check_for_line_and_polygon(line, enemy):
+        if type(enemy) == AsteroidsZone and not check_for_line_and_polygon(line, enemy):
             return False
-        elif type(enemy) == black_hole and not check_for_line_and_circle(line, enemy):
+        elif type(enemy) == BlackHole and not check_for_line_and_circle(line, enemy):
             return False
     return length
 
 
-# if __name__ == '__main__':
-#     line = [[0, 0], [10,10]]
-#     bh1 = black_hole(coordinate(10, 0), 3)
-#     print(check_for_line_and_multiple_enemies(line, [bh1]))
+if __name__ == '__main__':
+    source = Coordinate(0, 0)
+    dest = Coordinate(10, 10)
+    bh1 = BlackHole(Coordinate(10, 0), 3)
+    bh2 = BlackHole(Coordinate(5, 5), 2)
+    print(check_for_line_and_multiple_enemies(source, dest, [bh1, bh2]))
