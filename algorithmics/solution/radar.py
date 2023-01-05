@@ -25,7 +25,8 @@ def discrete_radar_graph(radar_list: List[Radar], point_to_find):
     for radar in radar_list:
         for i in range(0, ARG_RES):
             for j in range(1, RAD_RES + 1):
-                nodes.append(polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES))
+                coor = polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES)
+                nodes.append(coor)
 
     for u in nodes:
         for v in nodes:
