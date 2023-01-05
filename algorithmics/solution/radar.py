@@ -16,7 +16,7 @@ def polar_to_cart(origin, rad, arg):
     return Coordinate(x, y)
 
 
-def discrete_radar_graph(radar_list: List[Radar], point_to_find):
+def discrete_radar_graph(radar_list: List[Radar], point_to_find = []):
     nodes = []
     edges = []
 

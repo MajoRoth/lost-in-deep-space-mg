@@ -6,6 +6,7 @@ from algorithmics.enemy.asteroids_zone import AsteroidsZone
 from algorithmics.enemy.black_hole import BlackHole
 from algorithmics.enemy.enemy import Enemy
 from algorithmics.enemy.radar import Radar
+from algorithmics.solution.circle import get_circle_nodes
 from algorithmics.solution.line_intersects import check_for_line_and_multiple_enemies
 from algorithmics.solution.radar import discrete_radar_graph
 from algorithmics.utils.coordinate import Coordinate
@@ -41,8 +42,8 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
             for coor in enemy.boundary:
                 graph.add_node(coor)
         if isinstance(enemy, BlackHole):
-            for coor in enemy.boundary:
-                graph.add_node(coor)
+            for node in get_circle_nodes(enemy):
+                graph.add_node(node)
 
     for u in graph.nodes:
         for v in graph.nodes:
@@ -55,7 +56,10 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
     route = nx.shortest_path(graph, source=source, target=targets[0], weight='weight')
 
 
-    # nodes, edges = discrete_radar_graph([Radar(Coordinate(7, 3), 2)])
+    nodes, edges = discrete_radar_graph([Radar(Coordinate(7, 3), 10)])
+
+    # for n in nodes:
+    #     graph.add_node(n)
     #
     # for u, v in edges:
     #     graph.add_edge(u, v, weight=u.distance_to(v))
