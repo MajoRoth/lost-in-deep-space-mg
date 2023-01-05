@@ -16,19 +16,22 @@ def polar_to_cart(origin, rad, arg):
     return Coordinate(x, y)
 
 
-def discrete_radar_graph(radar_list: List[Radar]) -> Tuple[List[Coordinate], List[(Coordinate, Coordinate)]]:
+def discrete_radar_graph(radar_list: List[Radar]) -> Tuple[List[Coordinate], List[Tuple[Coordinate, Coordinate]]]:
     nodes = []
     edges = []
 
     for radar in radar_list:
         for i in range(0, ARG_RES):
             for j in range(1, RAD_RES + 1):
-                nodes.append(polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES))
+                coor = polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES)
+                nodes.append(coor)
 
     for u in nodes:
         for v in nodes:
             if check_if_edge_is_legal(radar_list, u, v):
                 edges.append((u, v))
+
+    return nodes, edges
 
 
 
@@ -43,6 +46,6 @@ def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate
 
 if __name__ == '__main__':
     radar_list = [
-        Radar()
+        Radar(Coordinate(0, 0), 1)
     ]
-    discrete_radar_graph()
+    print(discrete_radar_graph(radar_list))
