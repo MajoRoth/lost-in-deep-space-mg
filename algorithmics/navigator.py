@@ -40,7 +40,11 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
     for u in graph.nodes:
         for v in graph.nodes:
             if check_for_line_and_multiple_enemies(u, v, enemies):
-                graph.add_node(u, v, weight=u.distance_to(v))
+                print("added node from {} to {}".format(str(u), str(v)))
+                graph.add_edge(u, v, weight=u.distance_to(v))
+
+            else:
+                print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
     print(graph.nodes)
     print(graph.edges)
