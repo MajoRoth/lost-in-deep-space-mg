@@ -16,7 +16,7 @@ def plot_edge(edge):
 def test_radar():
     cood = Coordinate(0, 0)
     radar = Radar(cood, 100)
-    nodes, edges = discrete_radar_graph([radar], Coordinate(0.1, 0.2))
+    nodes, edges, perimeter = discrete_radar_graph([radar], [Coordinate(0.1, 0.2)])
     for node in nodes:
         plot_node(node)
     for edge in edges:
