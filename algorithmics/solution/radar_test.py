@@ -6,7 +6,7 @@ from algorithmics.utils.coordinate import Coordinate
 
 
 def plot_node(point):
-    plt.plot([point.x], [point.y], 'ro')
+    plt.plot([point[0].x], [point[0].y], 'ro')
 
 
 def plot_edge(edge):
@@ -14,9 +14,9 @@ def plot_edge(edge):
 
 
 def test_radar():
-    cood = Coordinate(1, 1)
+    cood = Coordinate(20, 1)
     radar = Radar(cood, 100)
-    nodes, edges, perimeter = discrete_radar_graph([radar], [Coordinate(0.1, 0.2)])
+    nodes, edges, perimeter = discrete_radar_graph([radar], [Coordinate(20, 50)])
     for node in nodes:
         plot_node(node)
     for edge in edges:

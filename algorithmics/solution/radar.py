@@ -6,8 +6,8 @@ from algorithmics.utils.coordinate import Coordinate
 import numpy as np
 
 
-ARG_RES = 12
-RAD_RES = 20
+ARG_RES = 7
+RAD_RES = 7
 
 
 def polar_to_cart(origin, rad, arg):
@@ -21,19 +21,23 @@ def discrete_radar_graph(radar_list: List[Radar], point_to_find):
     edges = []
     perimeter = []
 
-    nodes += point_to_find
+    for i in point_to_find:
+        nodes.append((i, 500))
 
     for radar in radar_list:
         for i in range(0, ARG_RES):
             for j in range(1, RAD_RES + 1):
                 coor = polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES)
-                nodes.append(coor)
+                nodes.append([coor, i])
                 if j == RAD_RES:
-                    perimeter.append(coor)
+                    perimeter.append([coor, i])
     for u in nodes:
         for v in nodes:
-            if check_if_edge_is_legal(radar_list, u, v):
-                edges.append((u, v))
+            if check_if_edge_is_legal(radar_list, u[0], v[0]) and v[1] != u[1]:
+                edges.append((u[0], v[0]))
+
+    for x in nodes:
+        x = x[0]
 
     return nodes, edges, perimeter
 
@@ -42,6 +46,8 @@ def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate
     for radar in radar_list:
         in_range = (u.distance_to(radar.center) <= radar.radius or v.distance_to(radar.center) <= radar.radius)
         if in_range and ((abs(algorithmics.utils.coordinate.angle(radar.center, u, v)) < 45) or (abs(algorithmics.utils.coordinate.angle(radar.center, v, u)) < 45)):
+            return False
+        elif u == radar.center or v == radar.center:
             return False
     return True
 
