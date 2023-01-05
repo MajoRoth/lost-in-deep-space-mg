@@ -25,6 +25,8 @@ from algorithmics.utils.coordinate import Coordinate
 KEY = b'nNjpIl9Ax2LRtm-p6ryCRZ8lRsL0DtuY0f9JeAe2wG0='
 
 
+
+
 def _extract_scenario_number_from_path(path: str) -> int:
     """Extract the number of a scenario given its name in the file system
 
