@@ -14,13 +14,15 @@ from algorithmics.utils.coordinate import Coordinate
 def check_for_line_and_polygon(line: [[float, float], [float, float]], shape: AsteroidsZone):
     poly = shapely.geometry.Polygon(shape.convert_to_array())
     l = shapely.geometry.LineString(line)
-    return l.intersects(poly)
+    # for i in range(0, len(poly.boundary)):
+    #     if line == poly.boundary[]
+    return l.intersection(poly).length
 
 
 def check_for_line_and_circle(line: [[float, float], [float, float]], shape: BlackHole):
     circle = shapely.geometry.Point(shape.center.x, shape.center.y).buffer(shape.radius)
     l = shapely.geometry.LineString(line)
-    return l.intersects(circle)
+    return l.intersection(circle).length
 
 
 def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, enemies: List[Enemy]):
@@ -40,7 +42,7 @@ if __name__ == '__main__':
     source = Coordinate(0, 0)
     dest = Coordinate(10, 10)
     bh1 = BlackHole(Coordinate(10, 0), 3)
-    bh2 = BlackHole(Coordinate(5, 5), 2)
+    bh2 = BlackHole(Coordinate(5, 5), 25)
     bh3 = BlackHole(Coordinate(12,12), 1)
     bh4 = BlackHole(Coordinate(-2, -2), 1)
     az1 = AsteroidsZone([Coordinate(3, 0), Coordinate(3, 10), Coordinate(10, 5)])
@@ -48,5 +50,10 @@ if __name__ == '__main__':
     az3 = AsteroidsZone([Coordinate(0, 0), Coordinate(0, 10), Coordinate(10, 10), Coordinate(10, 0)])
     az4 = AsteroidsZone([Coordinate(-10, -10), Coordinate(-10, 20), Coordinate(20, 20), Coordinate(20, -10)])
     az5 = AsteroidsZone([Coordinate(0, 3), Coordinate(5, 3), Coordinate(5, 10), Coordinate(0, 10)])
-    enems = [bh1, bh3, bh4, az2]
+    az6 = AsteroidsZone([Coordinate(0, 0), Coordinate(10, 0), Coordinate(10, 10)])
+    # line = [[0, 0], [10, 10]]
+    # l = shapely.geometry.LineString(line)
+
+    # print(l.intersection(shapely.geometry.Point(-100, -100).buffer(2)).length)
+    enems = [az6]
     print(check_for_line_and_multiple_enemies(source, dest, enems))
