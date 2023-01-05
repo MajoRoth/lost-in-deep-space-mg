@@ -28,11 +28,34 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
     :param allowed_detection: maximum allowed distance of radar detection
     :return: list of calculated path waypoints and the graph constructed
     """
-    print(source)
-    print(targets)
+    graph = nx.DiGraph()
+    route = list()
+    path = [source] + targets
+
+    for i in range(len(path)-1):
+        partial_route, partial_graph = calculate_path_for_single(path[i], path[i+1], enemies, allowed_detection)
+        route += partial_route
+
+    return route, graph
+
+
+
+
+def calculate_path_for_single(source: Coordinate, targets: Coordinate, enemies: List[Enemy], allowed_detection: float = 0) \
+        -> Tuple[List[Coordinate], nx.Graph]:
+    """Calculates a path from source to target without any detection
+
+    Note: The path must start at the source coordinate and end at the target coordinate!
+
+    :param source: source coordinate of the spaceship
+    :param targets: target coordinate of the spaceship
+    :param enemies: list of enemies along the way
+    :param allowed_detection: maximum allowed distance of radar detection
+    :return: list of calculated path waypoints and the graph constructed
+    """
     graph = nx.DiGraph()
     graph.add_node(source)  # add node for source
-    graph.add_node(targets[0])  # add node for first target
+    graph.add_node(targets)  # add node for first target
 
     """
         build nodes for each enemy
@@ -49,12 +72,7 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
         if isinstance(enemy, Radar):
             radar_list.append(enemy)
 
-    nodes, edges, perimeter = discrete_radar_graph(radar_list, [source] + targets)
-
-
-    print(nodes)
-    print(edges)
-    print("HHH")
+    nodes, edges, perimeter = discrete_radar_graph(radar_list, [source, targets])
 
     for node in nodes:
         graph.add_node(node)
@@ -67,47 +85,11 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
     for u in graph.nodes:
         for v in graph.nodes:
             if check_for_line_and_multiple_enemies(u, v, enemies):
-                print("added node from {} to {}".format(str(u), str(v)))
                 graph.add_edge(u, v, weight=u.distance_to(v))
-            else:
-                print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
-    route = nx.shortest_path(graph, source=source, target=targets[0], weight='weight')
+    route = nx.shortest_path(graph, source=source, target=targets, weight='weight')
 
-    print(graph.nodes)
-    print(graph.edges)
-    print(route)
     return route, graph
 
 
 
-def calculate_path_single_dest(source: Coordinate, target: Coordinate, enemies: List[Enemy], allowed_detection: float = 0) -> float:
-
-    graph = nx.DiGraph()
-
-    """
-        build nodes for each enemy
-    """
-    for enemy in enemies:
-        if isinstance(enemy, AsteroidsZone):
-            for coor in enemy.boundary:
-                graph.add_node(coor)
-        if isinstance(enemy, BlackHole):
-            for node in get_circle_nodes(enemy):
-                graph.add_node(node)
-
-
-    """
-        build edges
-    """
-    for u in graph.nodes:
-        for v in graph.nodes:
-            if check_for_line_and_multiple_enemies(u, v, enemies):
-                print("added node from {} to {}".format(str(u), str(v)))
-                graph.add_edge(u, v, weight=u.distance_to(v))
-            else:
-                print("DIDNT add node from {} to {}".format(str(u), str(v)))
-
-    route = nx.shortest_path(graph, source=source, target=target, weight='weight')
-
-    return nx.path_weight(graph, route, 'weight')

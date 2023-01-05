@@ -33,7 +33,7 @@ def discrete_radar_graph(radar_list: List[Radar], point_to_find):
                     perimeter.append((coor, i))
     for u in nodes:
         for v in nodes:
-            if check_if_edge_is_legal(radar_list, u[0], v[0]) and v[1] != u[1]:
+            if check_if_edge_is_legal(radar_list, u[0], v[0]) and v[1] != u[1] and v[1] % 6 != u[1] % 6:
                 edges.append((u[0], v[0]))
 
     new_node = list()
