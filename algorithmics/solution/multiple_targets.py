@@ -11,9 +11,9 @@ def solve_for_multiple_targets(targets, enemies, allowed_detection=0):
 
 def make_distance_matrix(targets, enemies, allowed_detection=0):
     mat = []
-    for node1 in range(len(targets)):
+    for node1 in targets:
         distances_from_target = []
-        for node2 in range(targets):
+        for node2 in targets:
             distances_from_target += navigator.calculate_path_single_dest(node1, node2, enemies, allowed_detection)
         mat += distances_from_target
     return mat
