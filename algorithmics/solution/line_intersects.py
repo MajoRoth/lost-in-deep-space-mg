@@ -6,6 +6,7 @@ import shapely.geometry
 from algorithmics.enemy.asteroids_zone import AsteroidsZone
 from algorithmics.enemy.black_hole import BlackHole
 from algorithmics.enemy.enemy import Enemy
+from algorithmics.enemy.radar import Radar
 from algorithmics.utils import coordinate
 from algorithmics.enemy import asteroids_zone, black_hole
 from algorithmics.utils.coordinate import Coordinate
@@ -33,6 +34,12 @@ def check_for_line_and_circle(line: [[float, float], [float, float]], shape: Bla
     return l.intersection(circle).length
 
 
+def check_for_line_and_radar(line: [[float, float], [float, float]], shape: Radar):
+    circle = shapely.geometry.Point(shape.center.x, shape.center.y).buffer(shape.radius)
+    l = shapely.geometry.LineString(line)
+    return l.intersection(circle).length
+
+
 def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, enemies: List[Enemy]):
     line = [[source.x, source.y], [dest.x, dest.y]]
     length = math.sqrt(math.pow(line[0][0] - line[1][0], 2) + math.pow(line[0][1] - line[1][1], 2))
@@ -42,6 +49,8 @@ def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, en
         if type(enemy) == AsteroidsZone and check_for_line_and_polygon(line, enemy):
             return False
         elif type(enemy) == BlackHole and check_for_line_and_circle(line, enemy):
+            return False
+        elif type(enemy) == Radar and check_for_line_and_circle(line, enemy):
             return False
     return True
 
