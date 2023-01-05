@@ -8,6 +8,7 @@ from algorithmics.solution.line_intersects import check_for_line_and_multiple_en
 from algorithmics.utils.coordinate import Coordinate
 
 
+
 # Navigator
 
 
@@ -43,11 +44,14 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
                 print("added node from {} to {}".format(str(u), str(v)))
                 graph.add_edge(u, v, weight=u.distance_to(v))
 
+
             else:
                 print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
+    route = nx.shortest_path(graph, source=source, target=targets[0])
     print(graph.nodes)
     print(graph.edges)
+    print(route)
 
 
 

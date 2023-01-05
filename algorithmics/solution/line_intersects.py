@@ -33,7 +33,7 @@ def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, en
             return False
         elif type(enemy) == BlackHole and check_for_line_and_circle(line, enemy):
             return False
-    return length
+    return True
 
 
 if __name__ == '__main__':
