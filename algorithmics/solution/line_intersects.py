@@ -12,7 +12,7 @@ from algorithmics.utils.coordinate import Coordinate
 
 
 def check_for_line_and_polygon(line: [[float, float], [float, float]], shape: asteroids_zone):
-    poly = shapely.geometry.polygon(shape.convert_to_array())
+    poly = shapely.geometry.Polygon(shape.convert_to_array())
     l = shapely.geometry.LineString(line)
     return l.intersects(poly)
 
