@@ -3,8 +3,10 @@ from typing import List, Tuple
 import networkx as nx
 
 from algorithmics.enemy.asteroids_zone import AsteroidsZone
+from algorithmics.enemy.black_hole import BlackHole
 from algorithmics.enemy.enemy import Enemy
 from algorithmics.enemy.radar import Radar
+from algorithmics.solution.circle import get_circle_nodes
 from algorithmics.solution.line_intersects import check_for_line_and_multiple_enemies
 from algorithmics.solution.radar import discrete_radar_graph
 from algorithmics.utils.coordinate import Coordinate
@@ -39,6 +41,9 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
         if isinstance(enemy, AsteroidsZone):
             for coor in enemy.boundary:
                 graph.add_node(coor)
+        if isinstance(enemy, BlackHole):
+            for node in get_circle_nodes(enemy):
+                graph.add_node(node)
 
     for u in graph.nodes:
         for v in graph.nodes:
@@ -49,23 +54,50 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
                 print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
     route = nx.shortest_path(graph, source=source, target=targets[0], weight='weight')
+
+
+    nodes, edges = discrete_radar_graph([Radar(Coordinate(7, 3), 10)])
+
+    # for n in nodes:
+    #     graph.add_node(n)
+    #
+    # for u, v in edges:
+    #     graph.add_edge(u, v, weight=u.distance_to(v))
+
     print(graph.nodes)
     print(graph.edges)
     print(route)
-
-    nodes, edges = discrete_radar_graph([Radar(Coordinate(0, 0), 1)])
-    for n in nodes:
-        graph.add_node(n)
-
-    for u, v in edges:
-        graph.add_edge(e)
-
-
-
-
     return route, graph
 
 
 
 def calculate_path_single_dest(source: Coordinate, target: Coordinate, enemies: List[Enemy], allowed_detection: float = 0) -> float:
-    pass
+
+    graph = nx.DiGraph()
+
+    """
+        build nodes for each enemy
+    """
+    for enemy in enemies:
+        if isinstance(enemy, AsteroidsZone):
+            for coor in enemy.boundary:
+                graph.add_node(coor)
+        if isinstance(enemy, BlackHole):
+            for node in get_circle_nodes(enemy):
+                graph.add_node(node)
+
+
+    """
+        build edges
+    """
+    for u in graph.nodes:
+        for v in graph.nodes:
+            if check_for_line_and_multiple_enemies(u, v, enemies):
+                print("added node from {} to {}".format(str(u), str(v)))
+                graph.add_edge(u, v, weight=u.distance_to(v))
+            else:
+                print("DIDNT add node from {} to {}".format(str(u), str(v)))
+
+    route = nx.shortest_path(graph, source=source, target=target, weight='weight')
+
+    return nx.path_weight(graph, route, 'weight')
