@@ -51,4 +51,4 @@ if __name__ == '__main__':
     radar = Radar(o, 5)
     nodes, edges, perimeter = discrete_radar_graph([radar], [u,v,w])
 
-    print(perimeter)
+    print()
