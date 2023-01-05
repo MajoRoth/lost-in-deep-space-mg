@@ -43,24 +43,17 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
             if check_for_line_and_multiple_enemies(u, v, enemies):
                 print("added node from {} to {}".format(str(u), str(v)))
                 graph.add_edge(u, v, weight=u.distance_to(v))
-
-
             else:
                 print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
-    route = nx.shortest_path(graph, source=source, target=targets[0])
+    route = nx.shortest_path(graph, source=source, target=targets[0], weight='weight')
     print(graph.nodes)
     print(graph.edges)
     print(route)
-
-
-
-
-
 
     print(nx.Graph)
 
 
 
 
-    return [source] + targets, graph
+    return route, graph

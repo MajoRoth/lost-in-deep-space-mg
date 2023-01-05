@@ -36,6 +36,13 @@ def discrete_radar_graph(radar_list: List[Radar]) -> Tuple[List[Coordinate], Lis
 def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate):
     for radar in radar_list:
         in_range = (u.distance_to(radar.center) <= radar.radius or v.distance_to(radar.center) <= radar.radius)
-        if (abs(algorithmics.utils.coordinate.angle(u, radar.center, v)) < 45) and in_range:
+        if (in_range and abs(algorithmics.utils.coordinate.angle(u, radar.center, v)) < 45):
             return False
     return True
+
+
+if __name__ == '__main__':
+    radar_list = [
+        Radar()
+    ]
+    discrete_radar_graph()
