@@ -37,6 +37,8 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
     """
         build nodes for each enemy
     """
+    radar_list = []
+
     for enemy in enemies:
         if isinstance(enemy, AsteroidsZone):
             for coor in enemy.boundary:
@@ -44,6 +46,22 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
         if isinstance(enemy, BlackHole):
             for node in get_circle_nodes(enemy):
                 graph.add_node(node)
+        if isinstance(enemy, Radar):
+            radar_list.append(enemy)
+
+    nodes, edges, perimeter = discrete_radar_graph(radar_list, [source] + targets)
+
+
+    print(nodes)
+    print(edges)
+    print("HHH")
+
+    for node in nodes:
+        graph.add_node(node)
+
+    for u, v in edges:
+        if check_for_line_and_multiple_enemies(u, v, enemies, radar=False):
+            graph.add_edge(u, v, weight=u.distance_to(v))
 
     for u in graph.nodes:
         for v in graph.nodes:
@@ -54,15 +72,6 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
                 print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
     route = nx.shortest_path(graph, source=source, target=targets[0], weight='weight')
-
-
-    nodes, edges = discrete_radar_graph([Radar(Coordinate(7, 3), 10)])
-
-    # for n in nodes:
-    #     graph.add_node(n)
-    #
-    # for u, v in edges:
-    #     graph.add_edge(u, v, weight=u.distance_to(v))
 
     print(graph.nodes)
     print(graph.edges)

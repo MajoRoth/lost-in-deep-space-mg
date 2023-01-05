@@ -40,7 +40,7 @@ def check_for_line_and_radar(line: [[float, float], [float, float]], shape: Rada
     return l.intersection(circle).length
 
 
-def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, enemies: List[Enemy]):
+def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, enemies: List[Enemy], radar=True):
     line = [[source.x, source.y], [dest.x, dest.y]]
     length = math.sqrt(math.pow(line[0][0] - line[1][0], 2) + math.pow(line[0][1] - line[1][1], 2))
     if length == 0:
@@ -50,7 +50,7 @@ def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, en
             return False
         elif type(enemy) == BlackHole and check_for_line_and_circle(line, enemy):
             return False
-        elif type(enemy) == Radar and check_for_line_and_circle(line, enemy):
+        elif radar and type(enemy) == Radar and check_for_line_and_circle(line, enemy):
             return False
     return True
 

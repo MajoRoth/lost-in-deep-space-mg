@@ -6,8 +6,8 @@ from algorithmics.utils.coordinate import Coordinate
 import numpy as np
 
 
-ARG_RES = 3
-RAD_RES = 3
+ARG_RES = 5
+RAD_RES = 5
 
 
 def polar_to_cart(origin, rad, arg):
