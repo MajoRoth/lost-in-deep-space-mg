@@ -12,7 +12,7 @@ from algorithmics.utils.coordinate import Coordinate
 
 
 def check_for_line_and_polygon(line: [[float, float], [float, float]], shape: asteroids_zone):
-    poly = shapely.geometry.Polygon(shape.convert_to_array())
+    poly = shapely.geometry.polygon(shape.convert_to_array())
     l = shapely.geometry.LineString(line)
     return l.intersects(poly)
 
@@ -29,8 +29,16 @@ def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, en
     if length == 0:
         return False
     for enemy in enemies:
-        if isinstance(enemy, AsteroidsZone) and not check_for_line_and_polygon(line, enemy):
+        if type(enemy) == AsteroidsZone and check_for_line_and_polygon(line, enemy):
             return False
-        elif isinstance(enemy, BlackHole) and not check_for_line_and_circle(line, enemy):
+        elif type(enemy) == BlackHole and check_for_line_and_circle(line, enemy):
             return False
-    return True
+    return length
+
+
+if __name__ == '__main__':
+    source = Coordinate(0, 0)
+    dest = Coordinate(10, 10)
+    bh1 = BlackHole(Coordinate(10, 0), 3)
+    bh2 = BlackHole(Coordinate(5, 5), 2)
+    print(check_for_line_and_multiple_enemies(source, dest, [bh1]))
