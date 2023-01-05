@@ -6,8 +6,8 @@ from algorithmics.utils.coordinate import Coordinate
 import numpy as np
 
 
-ARG_RES = 10
-RAD_RES = 10
+ARG_RES = 3
+RAD_RES = 3
 
 
 def polar_to_cart(origin, rad, arg):
@@ -19,6 +19,7 @@ def polar_to_cart(origin, rad, arg):
 def discrete_radar_graph(radar_list: List[Radar], point_to_find):
     nodes = []
     edges = []
+    perimeter = []
 
     nodes += point_to_find
 
@@ -27,13 +28,14 @@ def discrete_radar_graph(radar_list: List[Radar], point_to_find):
             for j in range(1, RAD_RES + 1):
                 coor = polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES)
                 nodes.append(coor)
-
+                if j == RAD_RES:
+                    perimeter.append(coor)
     for u in nodes:
         for v in nodes:
             if check_if_edge_is_legal(radar_list, u, v):
                 edges.append((u, v))
 
-    return nodes, edges
+    return nodes, edges, perimeter
 
 
 def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate):
@@ -47,6 +49,6 @@ def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate
 if __name__ == '__main__':
     o, u, v, w = Coordinate(0,0), Coordinate(3,0), Coordinate(0,3), Coordinate (0, -6)
     radar = Radar(o, 5)
-    nodes, edges = discrete_radar_graph([radar], [u,v,w])
+    nodes, edges, perimeter = discrete_radar_graph([radar], [u,v,w])
 
-    print((u.distance_to(radar.center) <= radar.radius or v.distance_to(radar.center) <= radar.radius))
+    print(perimeter)
