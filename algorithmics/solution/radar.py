@@ -6,8 +6,8 @@ from algorithmics.utils.coordinate import Coordinate
 import numpy as np
 
 
-ARG_RES = 60
-RAD_RES = 20
+ARG_RES = 10
+RAD_RES = 10
 
 
 def polar_to_cart(origin, rad, arg):
@@ -45,6 +45,8 @@ def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate
 
 
 if __name__ == '__main__':
-    u = Coordinate(1/2,1/2)
-    v = Coordinate(0,1)
-    print(algorithmics.utils.coordinate.angle(v, Coordinate(0,0), u))
+    o, u, v, w = Coordinate(0,0), Coordinate(3,0), Coordinate(0,3), Coordinate (0, -6)
+    radar = Radar(o, 5)
+    nodes, edges = discrete_radar_graph([radar], [u,v,w])
+
+    print((u.distance_to(radar.center) <= radar.radius or v.distance_to(radar.center) <= radar.radius))
