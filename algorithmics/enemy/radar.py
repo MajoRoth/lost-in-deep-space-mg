@@ -20,5 +20,5 @@ class Radar(Enemy):
         radial = string(coor1, self.center)
         if abs(algorithmics.utils.coordinate.angle(self.center, coor1, coor2)) >= 45:
             return (coor1, coor2)
-        else:
+
 
