@@ -29,9 +29,9 @@ def check_for_line_and_multiple_enemies(source: Coordinate, dest: Coordinate, en
     if length == 0:
         return False
     for enemy in enemies:
-        if type(enemy) == AsteroidsZone and not check_for_line_and_polygon(line, enemy):
+        if type(enemy) == AsteroidsZone and check_for_line_and_polygon(line, enemy):
             return False
-        elif type(enemy) == BlackHole and not check_for_line_and_circle(line, enemy):
+        elif type(enemy) == BlackHole and check_for_line_and_circle(line, enemy):
             return False
     return length
 
@@ -41,4 +41,4 @@ if __name__ == '__main__':
     dest = Coordinate(10, 10)
     bh1 = BlackHole(Coordinate(10, 0), 3)
     bh2 = BlackHole(Coordinate(5, 5), 2)
-    print(check_for_line_and_multiple_enemies(source, dest, [bh1, bh2]))
+    print(check_for_line_and_multiple_enemies(source, dest, [bh1]))
