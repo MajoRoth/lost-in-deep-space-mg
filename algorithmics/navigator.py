@@ -72,4 +72,32 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
 
 
 def calculate_path_single_dest(source: Coordinate, target: Coordinate, enemies: List[Enemy], allowed_detection: float = 0) -> float:
-    pass
+
+    graph = nx.DiGraph()
+
+    """
+        build nodes for each enemy
+    """
+    for enemy in enemies:
+        if isinstance(enemy, AsteroidsZone):
+            for coor in enemy.boundary:
+                graph.add_node(coor)
+        if isinstance(enemy, BlackHole):
+            for node in get_circle_nodes(enemy):
+                graph.add_node(node)
+
+
+    """
+        build edges
+    """
+    for u in graph.nodes:
+        for v in graph.nodes:
+            if check_for_line_and_multiple_enemies(u, v, enemies):
+                print("added node from {} to {}".format(str(u), str(v)))
+                graph.add_edge(u, v, weight=u.distance_to(v))
+            else:
+                print("DIDNT add node from {} to {}".format(str(u), str(v)))
+
+    route = nx.shortest_path(graph, source=source, target=target, weight='weight')
+
+    return nx.path_weight(graph, route, 'weight')
