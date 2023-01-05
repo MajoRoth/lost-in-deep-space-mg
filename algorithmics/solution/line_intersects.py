@@ -22,3 +22,6 @@ def check_for_line_and_multiple_enemies(line:  [[float, float], [float, float]],
         elif type(enemy) == black_hole and not check_for_line_and_circle(line, enemy):
             return False
     return True
+
+
+
