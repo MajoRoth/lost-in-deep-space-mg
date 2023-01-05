@@ -14,8 +14,16 @@ from algorithmics.utils.coordinate import Coordinate
 def check_for_line_and_polygon(line: [[float, float], [float, float]], shape: AsteroidsZone):
     poly = shapely.geometry.Polygon(shape.convert_to_array())
     l = shapely.geometry.LineString(line)
-    # for i in range(0, len(poly.boundary)):
-    #     if line == poly.boundary[]
+    x, y = poly.exterior.coords.xy
+    points = []
+    for i in range(0, len(x)):
+        points.append([x[i], y[i]])
+    print(points)
+    for i in range(0, len(points)-1):
+        if line == [points[i], points[i+1]] or line == [points[i+1], points[i]]:
+            return 0
+    if line == [points[0], points[len(points)-1]] or line == [points[len(points)-1], points[0]]:
+        return 0
     return l.intersection(poly).length
 
 
@@ -55,5 +63,5 @@ if __name__ == '__main__':
     # l = shapely.geometry.LineString(line)
 
     # print(l.intersection(shapely.geometry.Point(-100, -100).buffer(2)).length)
-    enems = [az6]
+    enems = []
     print(check_for_line_and_multiple_enemies(source, dest, enems))
