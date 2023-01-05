@@ -1,5 +1,5 @@
 import math
-
+[int, int]
 
 class Coordinate:
     """User-friendly coordinate class allowing for a broad range of operations

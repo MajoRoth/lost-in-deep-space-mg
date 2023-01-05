@@ -42,3 +42,4 @@ if __name__ == '__main__':
     bh1 = BlackHole(Coordinate(10, 0), 3)
     bh2 = BlackHole(Coordinate(5, 5), 2)
     print(check_for_line_and_multiple_enemies(source, dest, [bh1, bh2]))
+
