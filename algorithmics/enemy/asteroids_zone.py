@@ -13,3 +13,8 @@ class AsteroidsZone(Enemy):
         """
         self.boundary = boundary
 
+    def convert_to_array(self):
+        points_array = []
+        for coord in self.boundary:
+            points_array.append([coord.x, coord.y])
+        return points_array
