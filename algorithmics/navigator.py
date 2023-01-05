@@ -3,6 +3,7 @@ from typing import List, Tuple
 import networkx as nx
 
 from algorithmics.enemy.asteroids_zone import AsteroidsZone
+from algorithmics.enemy.black_hole import BlackHole
 from algorithmics.enemy.enemy import Enemy
 from algorithmics.enemy.radar import Radar
 from algorithmics.solution.line_intersects import check_for_line_and_multiple_enemies
@@ -39,6 +40,9 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
         if isinstance(enemy, AsteroidsZone):
             for coor in enemy.boundary:
                 graph.add_node(coor)
+        if isinstance(enemy, BlackHole):
+            for coor in enemy.boundary:
+                graph.add_node(coor)
 
     for u in graph.nodes:
         for v in graph.nodes:
@@ -49,20 +53,16 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
                 print("DIDNT add node from {} to {}".format(str(u), str(v)))
 
     route = nx.shortest_path(graph, source=source, target=targets[0], weight='weight')
+
+
+    # nodes, edges = discrete_radar_graph([Radar(Coordinate(7, 3), 2)])
+    #
+    # for u, v in edges:
+    #     graph.add_edge(u, v, weight=u.distance_to(v))
+
     print(graph.nodes)
     print(graph.edges)
     print(route)
-
-    nodes, edges = discrete_radar_graph([Radar(Coordinate(0, 0), 1)])
-    for n in nodes:
-        graph.add_node(n)
-
-    for u, v in edges:
-        graph.add_edge(e)
-
-
-
-
     return route, graph
 
 
