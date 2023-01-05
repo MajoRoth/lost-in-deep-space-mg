@@ -21,3 +21,4 @@ class Radar(Enemy):
         if abs(algorithmics.utils.coordinate.angle(self.center, coor1, coor2)) >= 45:
             return (coor1, coor2)
 
+

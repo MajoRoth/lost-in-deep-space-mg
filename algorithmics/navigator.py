@@ -4,7 +4,9 @@ import networkx as nx
 
 from algorithmics.enemy.asteroids_zone import AsteroidsZone
 from algorithmics.enemy.enemy import Enemy
+from algorithmics.enemy.radar import Radar
 from algorithmics.solution.line_intersects import check_for_line_and_multiple_enemies
+from algorithmics.solution.radar import discrete_radar_graph
 from algorithmics.utils.coordinate import Coordinate
 
 
@@ -51,9 +53,19 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
     print(graph.edges)
     print(route)
 
-    print(nx.Graph)
+    nodes, edges = discrete_radar_graph([Radar(Coordinate(0, 0), 1)])
+    for n in nodes:
+        graph.add_node(n)
+
+    for u, v in edges:
+        graph.add_edge(e)
 
 
 
 
     return route, graph
+
+
+
+def calculate_path_single_dest(source: Coordinate, target: Coordinate, enemies: List[Enemy], allowed_detection: float = 0) -> float:
+    pass
