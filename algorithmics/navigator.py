@@ -63,6 +63,7 @@ def calculate_path(source: Coordinate, targets: List[Coordinate], enemies: List[
         if check_for_line_and_multiple_enemies(u, v, enemies, radar=False):
             graph.add_edge(u, v, weight=u.distance_to(v))
 
+
     for u in graph.nodes:
         for v in graph.nodes:
             if check_for_line_and_multiple_enemies(u, v, enemies):

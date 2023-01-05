@@ -4,10 +4,10 @@ import algorithmics.utils.coordinate
 from algorithmics.enemy.radar import Radar
 from algorithmics.utils.coordinate import Coordinate
 import numpy as np
+import tqdm
 
-
-ARG_RES = 7
-RAD_RES = 7
+ARG_RES = 12
+RAD_RES = 20
 
 
 def polar_to_cart(origin, rad, arg):
@@ -28,18 +28,24 @@ def discrete_radar_graph(radar_list: List[Radar], point_to_find):
         for i in range(0, ARG_RES):
             for j in range(1, RAD_RES + 1):
                 coor = polar_to_cart(radar.center, j*radar.radius/RAD_RES, i*2*np.pi/ARG_RES)
-                nodes.append([coor, i])
+                nodes.append((coor, i))
                 if j == RAD_RES:
-                    perimeter.append([coor, i])
+                    perimeter.append((coor, i))
     for u in nodes:
         for v in nodes:
             if check_if_edge_is_legal(radar_list, u[0], v[0]) and v[1] != u[1]:
                 edges.append((u[0], v[0]))
 
-    for x in nodes:
-        x = x[0]
+    new_node = list()
+    perimeter_new = list()
 
-    return nodes, edges, perimeter
+    for node in nodes:
+        new_node.append(node[0])
+
+    for peri in perimeter:
+        perimeter_new.append(peri[0])
+
+    return new_node, edges, perimeter_new
 
 
 def check_if_edge_is_legal(radar_list: List[Radar], u: Coordinate, v: Coordinate):
