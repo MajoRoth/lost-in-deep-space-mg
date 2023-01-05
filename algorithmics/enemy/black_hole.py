@@ -10,4 +10,5 @@ class BlackHole(Enemy):
         :param center: the location of the black hole
         :param radius: radius of the post
         """
-        pass
+        self.center=center
+        self.radius=radius

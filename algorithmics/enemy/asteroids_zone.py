@@ -11,4 +11,5 @@ class AsteroidsZone(Enemy):
 
         :param boundary: list of coordinates representing the boundary of the asteroids zone
         """
-        pass
+        self.boundary = boundary
+

@@ -1,8 +1,9 @@
-import glob
 import json
 import os
 import re
 import time
+from os.path import join
+from pathlib import Path
 from typing import List, Tuple, Optional
 
 import dash
@@ -25,8 +26,6 @@ from algorithmics.utils.coordinate import Coordinate
 KEY = b'nNjpIl9Ax2LRtm-p6ryCRZ8lRsL0DtuY0f9JeAe2wG0='
 
 
-
-
 def _extract_scenario_number_from_path(path: str) -> int:
     """Extract the number of a scenario given its name in the file system
 
@@ -41,12 +40,18 @@ def _extract_scenario_number_from_path(path: str) -> int:
     return int(re.match(r'.*scenario_(\d+)\.json', path).group(1))
 
 
-scenario_groups = os.listdir('../resources/scenarios')
-scenario_paths = {group: sorted(glob.glob(f'resources/scenarios/{group}/scenario_*.json'),
+scenario_groups = os.listdir(Path('../resources/scenarios'))
+
+scenario_paths = {group: sorted(os.listdir(join(Path('../resources/scenarios'), group)),
                                 key=lambda path: _extract_scenario_number_from_path(path))
                   for group in scenario_groups}
+
+for group, files in scenario_paths.items():
+    scenario_paths[group] = [join(Path('../resources/scenarios'), group, f) for f in files]
+
 scenario_groups = sorted(scenario_groups,
                          key=lambda group: _extract_scenario_number_from_path(scenario_paths[group][0]))
+
 
 with open('../resources/scenario_names.json', 'r') as f:
     scenario_names = json.load(f)

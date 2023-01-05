@@ -10,4 +10,5 @@ class Radar(Enemy):
         :param center: location of the radar
         :param radius: detection radius of the radar
         """
-        pass
+        self.center = center
+        self.radius = radius
