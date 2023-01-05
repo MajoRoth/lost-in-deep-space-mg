@@ -1,4 +1,5 @@
 import math
+import shapely.geometry
 
 
 class Coordinate:
@@ -153,3 +154,13 @@ class Coordinate:
 
     def cross(self, other: 'Coordinate') -> float:
         return self.x * other.y - self.y * other.x
+
+
+def string(coor1, coor2):
+    return shapely.geometry.LineString([(coor1.x, coor1.y), (coor2.x, coor2.y)])
+
+
+def angle(coor1, coor2, coor3):
+    ang = math.degrees(
+        math.atan2(coor3.y - coor2.y, coor3.x - coor2.x) - math.atan2(coor1.y - coor2.y, coor1.x - coor2.x))
+    return ang
