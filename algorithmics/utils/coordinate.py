@@ -1,5 +1,6 @@
 import math
 import shapely.geometry
+import numpy as np
 
 
 class Coordinate:
@@ -160,7 +161,9 @@ def string(coor1, coor2):
     return shapely.geometry.LineString([(coor1.x, coor1.y), (coor2.x, coor2.y)])
 
 
+def pxy(u, v):
+    return np.sqrt((v.x-u.x)**2 + (v.y-u.y)**2)
+
+
 def angle(coor1, coor2, coor3):
-    ang = math.degrees(
-        math.atan2(coor3.y - coor2.y, coor3.x - coor2.x) - math.atan2(coor1.y - coor2.y, coor1.x - coor2.x))
-    return ang
+    return np.degrees(np.arccos((pxy(coor2, coor1)**2 + pxy(coor2, coor3)**2 - pxy(coor1, coor3)**2)/(2*pxy(coor2, coor1)*pxy(coor2, coor3))))
